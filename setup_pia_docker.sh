@@ -166,8 +166,8 @@ services:
     container_name: pia_frontend_web
     restart: unless-stopped
     ports:
-      - "\${NGINX_HTTP_PORT:-80}:80"
-      - "\${NGINX_HTTPS_PORT:-443}:443"
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
     depends_on:
       - pia-backend
     volumes:
