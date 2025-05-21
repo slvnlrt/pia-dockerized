@@ -78,6 +78,8 @@ RAILS_SERVE_STATIC_FILES=true
 
 # --- PIA Frontend Settings ---
 API_BASE_URL=/api/v1
+# NGINX_HTTP_PORT=80  # Optionnel: Décommentez et modifiez pour changer le port HTTP exposé sur l'hôte
+# NGINX_HTTPS_PORT=443 # Optionnel: Décommentez et modifiez pour changer le port HTTPS exposé sur l'hôte
 
 # --- SSL Certificate Settings ---
 CERT_HOSTNAME=localhost
@@ -164,8 +166,8 @@ services:
     container_name: pia_frontend_web
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - "\${NGINX_HTTP_PORT:-80}:80"
+      - "\${NGINX_HTTPS_PORT:-443}:443"
     depends_on:
       - pia-backend
     volumes:
@@ -506,6 +508,7 @@ echo "2. Créez et configurez votre fichier .env :"
 echo "   cp .env.example .env"
 echo "   nano .env  # (Remplissez POSTGRES_PASSWORD et SECRET_KEY_BASE)."
 echo "                # (Optionnel : modifiez CERT_HOSTNAME si vous voulez utiliser un autre nom d'hôte que 'localhost')"
+echo "                # (Optionnel : modifiez NGINX_HTTP_PORT et NGINX_HTTPS_PORT si vous voulez changer les ports Nginx exposés sur la machine hôte)"
 echo "                # (Si vous changez CERT_HOSTNAME pour, par ex., 'pia.local', ajoutez '127.0.0.1 pia.local' à votre fichier /etc/hosts local)"
 echo "3. Construisez les images Docker :"
 echo "   sudo docker-compose build"
